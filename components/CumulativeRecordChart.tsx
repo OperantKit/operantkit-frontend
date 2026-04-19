@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { CumulativeRecordData } from '../../types/data';
+import { CumulativeRecordData } from '../types/data';
 
 interface CumulativeRecordChartProps {
   data: CumulativeRecordData[];

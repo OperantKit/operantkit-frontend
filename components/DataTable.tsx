@@ -1,6 +1,6 @@
 // operantkit/apps/operantkit-frontend/components/DataTable.tsx
 import React from 'react';
-import { DataTableData } from '../../types/data';
+import { DataTableData } from '../types/data';
 
 interface DataTableProps {
   data: DataTableData[];

@@ -1,4 +1,6 @@
 // operantkit/apps/operantkit-frontend/lib/api/client.ts
+'use client';
+
 import useSWR from 'swr';
 import { ExperimentSettings } from '../../types/experiment';
 import { ExperimentSessionData } from '../../types/data';

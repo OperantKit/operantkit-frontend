@@ -1,4 +1,6 @@
 // operantkit/apps/operantkit-frontend/app/data/page.tsx
+'use client';
+
 import React, { useMemo } from 'react';
 import DataTable from '../../components/DataTable';
 import CumulativeRecordChart from '../../components/CumulativeRecordChart';

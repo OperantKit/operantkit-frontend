@@ -10,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { ResponseRateData } from '../../types/data';
+import { ResponseRateData } from '../types/data';
 
 interface ResponseRateChartProps {
   data: ResponseRateData[];

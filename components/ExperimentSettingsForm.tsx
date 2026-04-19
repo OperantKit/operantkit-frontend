@@ -1,4 +1,6 @@
 // operantkit/apps/operantkit-frontend/components/ExperimentSettingsForm.tsx
+'use client';
+
 import React, { useState, useCallback, useEffect } from "react";
 import {
   ExperimentSettings,
@@ -16,8 +18,8 @@ import {
   defaultFixedIntervalConfig,
   defaultVariableIntervalConfig,
   defaultExtinctionConfig,
-} from "../../types/experiment";
-import { useExperimentSettings, saveExperimentSettings } from "../../lib/api/client";
+} from "../types/experiment";
+import { useExperimentSettings, saveExperimentSettings } from "../lib/api/client";
 import { useSWRConfig } from "swr"; // Import useSWRConfig for mutate
 
 const ExperimentSettingsForm: React.FC = () => {
@@ -582,7 +584,7 @@ const ExperimentSettingsForm: React.FC = () => {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   />
                   {errors[`trialConditions[${index}].maxResponses`] && (
-                    <p className className="mt-1 text-sm text-red-600">
+                    <p className="mt-1 text-sm text-red-600">
                       {errors[`trialConditions[${index}].maxResponses`]}
                     </p>
                   )}
