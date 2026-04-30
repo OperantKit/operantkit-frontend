@@ -1,76 +1,84 @@
 # operantkit-frontend
 
-## 概要
+:jp: [日本語版 README](README.ja.md)
 
-OperantKit のウェブフロントエンド。実験者向けダッシュボードと教育用シミュレータ UI を提供する。
-セッションデータの可視化、実験設定の編集、ユーザ管理ページを含む。
+## Overview
 
-**Status**: Initial port from `apps-v0/operantkit-frontend`; Next.js 16, React 19, Tailwind v4.
+Web frontend for OperantKit. Provides an experimenter dashboard and an
+educational simulator UI. Includes session-data visualisation, experiment
+configuration editing, and user management pages.
 
-## 主な画面
+**Status**: Initial port from `apps-v0/operantkit-frontend`; Next.js 16,
+React 19, Tailwind v4.
 
-- `/` — ダッシュボード（最近のセッション、概要統計）
-- `/login`, `/register` — 認証
-- `/profile` — ユーザプロファイル
-- `/settings` — 実験パラメータ設定（FR / VR / FI / VI 等のスケジュール選択）
-- `/data` — セッションデータの可視化（Recharts による累積記録・反応率チャート）
+## Main screens
 
-## API ルート
+- `/` — Dashboard (recent sessions, summary statistics)
+- `/login`, `/register` — Authentication
+- `/profile` — User profile
+- `/settings` — Experiment parameter configuration (FR / VR / FI / VI
+  schedule selection, etc.)
+- `/data` — Session-data visualisation (cumulative records and response-rate
+  charts via Recharts)
 
-- `GET/POST /api/data` — セッションデータ
-- `GET/POST /api/settings` — 実験設定
+## API routes
 
-現状は Next.js 内のモックエンドポイントを返す。Python バックエンド（behavior-scope 等）との
-接続は将来作業。
+- `GET/POST /api/data` — Session data
+- `GET/POST /api/settings` — Experiment configuration
 
-## セットアップ
+Currently returns mock endpoints hosted inside Next.js. Wiring to the
+Python backends (behavior-scope etc.) is future work.
 
-ランタイムは [mise](https://mise.jdx.dev) で固定する。Node.js のバージョンは `.mise.toml` で
-宣言済み（24 系 LTS）。
+## Setup
+
+The runtime is pinned via [mise](https://mise.jdx.dev). The Node.js
+version is declared in `.mise.toml` (Node 24 LTS).
 
 ```bash
-# 1. Node を取得
+# 1. Install Node
 mise install
 
-# 2. 依存をインストール（package-lock.json から再現）
+# 2. Install dependencies (reproducible from package-lock.json)
 mise exec -- npm ci
 ```
 
-## 開発
+## Development
 
 ```bash
-# 開発サーバ（http://localhost:3000）
+# Dev server (http://localhost:3000)
 mise exec -- npm run dev
 
-# プロダクションビルド
+# Production build
 mise exec -- npm run build
 
 # Lint
 mise exec -- npm run lint
 
-# 型チェック
+# Type-check
 mise exec -- npx tsc --noEmit
 
-# E2E テスト（要 Playwright ブラウザ: mise exec -- npx playwright install chromium）
+# E2E tests (requires Playwright browsers: mise exec -- npx playwright install chromium)
 mise exec -- npm test
 ```
 
-## 依存関係
+## Dependencies
 
-主要依存（`package.json` 参照）:
+Key dependencies (see `package.json`):
 
-- `next` ^16.2 — React フレームワーク（App Router）
-- `react`, `react-dom` ^19 — UI ライブラリ
-- `recharts` ^3 — チャート
-- `swr` ^2 — クライアントサイドのデータフェッチ・キャッシュ
-- `tailwindcss` ^4, `@tailwindcss/postcss` ^4 — スタイリング
-- `typescript` ^5 — 型チェック
-- `@playwright/test` ^1 — E2E テスト
+- `next` ^16.2 — React framework (App Router)
+- `react`, `react-dom` ^19 — UI library
+- `recharts` ^3 — Charts
+- `swr` ^2 — Client-side data fetching / caching
+- `tailwindcss` ^4, `@tailwindcss/postcss` ^4 — Styling
+- `typescript` ^5 — Type-checking
+- `@playwright/test` ^1 — E2E tests
 
-## 備考
+## Notes
 
-- ランタイムは `mise` で管理する。`nvm` / `nodenv` / `asdf` は使用しない。
-- パッケージマネージャは `npm` のみ（`package-lock.json` を再現性のため commit する）。
-  `pnpm` / `yarn` / `bun` は使用しない。
-- direnv の `layout node` 等の layout 系は使用しない（`.envrc` は防御的・最小限のみ）。
-- `node_modules/` / `.next/` / `playwright-report/` / `test-results/` は `.gitignore` 済み。
+- Runtime is managed by `mise`. Do not use `nvm` / `nodenv` / `asdf`.
+- `npm` is the only supported package manager (commit `package-lock.json`
+  for reproducibility). `pnpm` / `yarn` / `bun` must not be used.
+- Do not use direnv layouts such as `layout node` (keep `.envrc`
+  defensive and minimal).
+- `node_modules/` / `.next/` / `playwright-report/` / `test-results/`
+  are gitignored.
