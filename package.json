@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run wasm:copy && next dev",
+    "build": "npm run wasm:copy && next build",
+    "wasm:copy": "node -e \"require('fs').copyFileSync('node_modules/contingency/contingency_bg.wasm','public/contingency_bg.wasm')\"",
     "start": "next start",
     "lint": "eslint",
     "test": "playwright test",
-    "test:smoke": "playwright test tests/smoke.spec.ts"
+    "test:smoke": "playwright test tests/smoke.spec.ts",
+    "wasm:build": "cd ../../core/contingency-rs && wasm-pack build --target web --release --out-dir pkg"
   },
   "dependencies": {
+    "contingency": "file:../../core/contingency-rs/pkg",
+    "framer-motion": "^12.38.0",
+    "idb": "^8.0.0",
     "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",
