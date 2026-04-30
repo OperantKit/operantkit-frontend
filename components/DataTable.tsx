@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/components/DataTable.tsx
 import React from 'react';
 import { DataTableData } from '../types/data';
 

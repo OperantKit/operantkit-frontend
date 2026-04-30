@@ -1,5 +1,3 @@
-// operantkit/apps/operantkit-frontend/types/experiment.ts
-
 // Enum for different schedule types
 export enum ScheduleType {
   FixedRatio = "FR",

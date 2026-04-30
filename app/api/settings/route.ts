@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/app/api/settings/route.ts
 import { NextResponse } from 'next/server';
 import { defaultExperimentSettings, ExperimentSettings } from '../../../types/experiment';
 

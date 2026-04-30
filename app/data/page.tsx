@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/app/data/page.tsx
 'use client';
 
 import React, { useMemo } from 'react';

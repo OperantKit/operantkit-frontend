@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/app/profile/page.tsx
 'use client'; // This is a client component
 
 import React from 'react';

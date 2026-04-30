@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/app/register/page.tsx
 'use client'; // This is a client component
 
 import React, { useState } from 'react';

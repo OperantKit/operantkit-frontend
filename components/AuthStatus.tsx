@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/components/AuthStatus.tsx
 'use client';
 
 import React from 'react';

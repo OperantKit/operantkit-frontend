@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/app/settings/page.tsx
 import React from 'react';
 import ExperimentSettingsForm from '../../components/ExperimentSettingsForm'; // Adjust path as needed
 

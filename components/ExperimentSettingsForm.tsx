@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/components/ExperimentSettingsForm.tsx
 'use client';
 
 import React, { useState, useCallback, useEffect } from "react";

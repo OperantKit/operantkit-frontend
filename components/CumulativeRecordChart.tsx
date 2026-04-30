@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/components/CumulativeRecordChart.tsx
 import React from 'react';
 import {
   LineChart,

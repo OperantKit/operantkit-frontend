@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/lib/api/client.ts
 'use client';
 
 import useSWR from 'swr';

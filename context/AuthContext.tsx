@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/context/AuthContext.tsx
 'use client';
 
 import React, {

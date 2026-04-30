@@ -1,5 +1,3 @@
-// operantkit/apps/operantkit-frontend/types/data.ts
-
 // Enum for different types of experiment events
 export enum ExperimentEventType {
   Response = "RESPONSE",

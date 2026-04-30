@@ -1,4 +1,3 @@
-// operantkit/apps/operantkit-frontend/components/ResponseRateChart.tsx
 import React from 'react';
 import {
   LineChart,
