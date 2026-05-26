@@ -7,7 +7,7 @@
 OperantKit のウェブフロントエンド。実験者向けダッシュボードと教育用シミュレータ UI を提供する。
 セッションデータの可視化、実験設定の編集、ユーザ管理ページを含む。
 
-**Status**: Initial port from `apps-v0/operantkit-frontend`; Next.js 16, React 19, Tailwind v4.
+**Status**: Next.js 16、React 19、Tailwind v4。
 
 ## 主な画面
 
@@ -22,7 +22,7 @@ OperantKit のウェブフロントエンド。実験者向けダッシュボー
 - `GET/POST /api/data` — セッションデータ
 - `GET/POST /api/settings` — 実験設定
 
-現状は Next.js 内のモックエンドポイントを返す。Python バックエンド（behavior-scope 等）との
+現状は Next.js 内のモックエンドポイントを返す。Python バックエンド（session-visualizer SSE 等）との
 接続は将来作業。
 
 ## セットアップ

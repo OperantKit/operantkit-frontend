@@ -8,8 +8,7 @@ Web frontend for OperantKit. Provides an experimenter dashboard and an
 educational simulator UI. Includes session-data visualisation, experiment
 configuration editing, and user management pages.
 
-**Status**: Initial port from `apps-v0/operantkit-frontend`; Next.js 16,
-React 19, Tailwind v4.
+**Status**: Next.js 16, React 19, Tailwind v4.
 
 ## Main screens
 
@@ -27,7 +26,7 @@ React 19, Tailwind v4.
 - `GET/POST /api/settings` — Experiment configuration
 
 Currently returns mock endpoints hosted inside Next.js. Wiring to the
-Python backends (behavior-scope etc.) is future work.
+Python backends (session-visualizer SSE etc.) is future work.
 
 ## Setup
 
