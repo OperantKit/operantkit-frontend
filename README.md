@@ -71,4 +71,4 @@ npm test                          # Playwright end-to-end tests
 
 ## License
 
-The repository does not include a license file yet.
+MIT. See [LICENSE](LICENSE).

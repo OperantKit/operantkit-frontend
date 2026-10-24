@@ -5,3 +5,4 @@ title: "operantkit-frontend"
 authors:
   - name: "OperantKit contributors"
 repository-code: "https://github.com/OperantKit/operantkit-frontend"
+license: MIT

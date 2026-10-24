@@ -71,4 +71,4 @@ npm test                          # Playwright end-to-end tests
 
 ## ライセンス
 
-このリポジトリにはまだライセンスファイルがありません。
+MIT です。[LICENSE](LICENSE) を参照してください。
