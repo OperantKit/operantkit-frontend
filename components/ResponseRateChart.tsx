@@ -21,7 +21,8 @@ const ResponseRateChart: React.FC<ResponseRateChartProps> = ({ data }) => {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <div data-testid="response-rate-chart-container" className="h-[400px] w-full min-w-0">
+      <ResponsiveContainer width="100%" height="100%">
       <LineChart
         data={data}
         margin={{
@@ -59,7 +60,8 @@ const ResponseRateChart: React.FC<ResponseRateChartProps> = ({ data }) => {
           name="Response Rate"
         />
       </LineChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 

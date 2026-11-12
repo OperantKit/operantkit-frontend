@@ -21,7 +21,8 @@ const CumulativeRecordChart: React.FC<CumulativeRecordChartProps> = ({ data }) =
   }
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <div data-testid="cumulative-record-chart-container" className="h-[400px] w-full min-w-0">
+      <ResponsiveContainer width="100%" height="100%">
       <LineChart
         data={data}
         margin={{
@@ -69,7 +70,8 @@ const CumulativeRecordChart: React.FC<CumulativeRecordChartProps> = ({ data }) =
           />
         )}
       </LineChart>
-    </ResponsiveContainer>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
