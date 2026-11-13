@@ -2,11 +2,11 @@
 
 import React, {
   createContext,
-  useState,
   useContext,
   ReactNode,
   useCallback,
-  useEffect,
+  useMemo,
+  useSyncExternalStore,
 } from 'react';
 
 interface AuthContextType {
@@ -22,30 +22,52 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<{ username: string } | null>(null);
+// The logged-in user lives in local storage under this key.
+const STORAGE_KEY = 'user';
 
-  // Attempt to load auth state from local storage on initial render
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsLoggedIn(true);
-    }
-  }, []);
+// Components subscribed to the stored user, notified after login/logout in
+// this tab. Changes from other tabs arrive through the `storage` event.
+const listeners = new Set<() => void>();
+
+const subscribeToStoredUser = (onChange: () => void) => {
+  listeners.add(onChange);
+  window.addEventListener('storage', onChange);
+  return () => {
+    listeners.delete(onChange);
+    window.removeEventListener('storage', onChange);
+  };
+};
+
+const notifyStoredUserChanged = () => {
+  listeners.forEach((onChange) => onChange());
+};
+
+const readStoredUser = () => localStorage.getItem(STORAGE_KEY);
+
+// The server has no local storage, so it renders as logged out.
+const readStoredUserOnServer = () => null;
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const storedUser = useSyncExternalStore(
+    subscribeToStoredUser,
+    readStoredUser,
+    readStoredUserOnServer
+  );
+  const user = useMemo<{ username: string } | null>(
+    () => (storedUser ? JSON.parse(storedUser) : null),
+    [storedUser]
+  );
+  const isLoggedIn = user !== null;
 
   const login = useCallback((username: string) => {
     const newUser = { username };
-    setUser(newUser);
-    setIsLoggedIn(true);
-    localStorage.setItem('user', JSON.stringify(newUser)); // Persist to local storage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser)); // Persist to local storage
+    notifyStoredUserChanged();
   }, []);
 
   const logout = useCallback(() => {
-    setUser(null);
-    setIsLoggedIn(false);
-    localStorage.removeItem('user'); // Clear from local storage
+    localStorage.removeItem(STORAGE_KEY); // Clear from local storage
+    notifyStoredUserChanged();
   }, []);
 
   const value = {

@@ -17,13 +17,14 @@ export type Snapshot = {
 // single snapshot per render.
 export function useSnapshotStream(eventsUrl: string) {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
-  const [connectionState, setConnectionState] = useState<"idle" | "connecting" | "live" | "stale">(
-    "idle",
-  );
+  // The state reported by the EventSource, tagged with the URL it belongs to.
+  // A URL with no report yet is "connecting".
+  const [reported, setReported] = useState<{ url: string; state: "live" | "stale" } | null>(null);
+  const connectionState: "idle" | "connecting" | "live" | "stale" =
+    reported !== null && reported.url === eventsUrl ? reported.state : "connecting";
   const esRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
-    setConnectionState("connecting");
     const es = new EventSource(eventsUrl);
     esRef.current = es;
 
@@ -38,8 +39,8 @@ export function useSnapshotStream(eventsUrl: string) {
 
     es.addEventListener("snapshot", handle as EventListener);
     es.onmessage = handle;
-    es.onopen = () => setConnectionState("live");
-    es.onerror = () => setConnectionState("stale");
+    es.onopen = () => setReported({ url: eventsUrl, state: "live" });
+    es.onerror = () => setReported({ url: eventsUrl, state: "stale" });
 
     return () => {
       es.close();

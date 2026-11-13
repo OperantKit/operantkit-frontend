@@ -4,14 +4,25 @@ import useSWR from 'swr';
 import { ExperimentSettings } from '../../types/experiment';
 import { ExperimentSessionData } from '../../types/data';
 
+// Error thrown when the API answers with a non-2xx status.
+// `info` holds the parsed JSON body of the error response.
+export class FetchError extends Error {
+  info: unknown;
+  status: number;
+
+  constructor(message: string, info: unknown, status: number) {
+    super(message);
+    this.name = 'FetchError';
+    this.info = info;
+    this.status = status;
+  }
+}
+
 // Generic fetcher function for SWR
 const fetcher = async (url: string) => {
   const res = await fetch(url);
   if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.') as any;
-    error.info = await res.json();
-    error.status = res.status;
-    throw error;
+    throw new FetchError('An error occurred while fetching the data.', await res.json(), res.status);
   }
   return res.json();
 };
@@ -37,10 +48,7 @@ export const saveExperimentSettings = async (settings: ExperimentSettings) => {
   });
 
   if (!res.ok) {
-    const error = new Error('An error occurred while saving the settings.') as any;
-    error.info = await res.json();
-    error.status = res.status;
-    throw error;
+    throw new FetchError('An error occurred while saving the settings.', await res.json(), res.status);
   }
   return res.json();
 };

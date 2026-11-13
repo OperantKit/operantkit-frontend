@@ -14,13 +14,13 @@ export interface ExperimentEvent {
   id: string; // Unique ID for the event
   timestamp: number; // Timestamp in milliseconds or seconds since epoch
   type: ExperimentEventType;
-  details?: Record<string, any>; // Optional details about the event (e.g., response force, stimulus ID)
+  details?: Record<string, unknown>; // Optional details about the event (e.g., response force, stimulus ID)
 }
 
 // Interface for data to be displayed in a generic table
 export interface DataTableData {
   id: string; // Unique ID for the row
-  [key: string]: any; // Arbitrary key-value pairs for columns
+  [key: string]: string | number | boolean | null | undefined; // Arbitrary key-value pairs for columns
 }
 
 // Interface for data points in a Cumulative Record graph
@@ -226,7 +226,7 @@ export const mockExperimentSessionData: ExperimentSessionData = (() => {
 })();
 
 // Convert events to DataTableData format (example)
-export const mockDataTableData: DataTableData[] = mockExperimentSessionData.events.map((event, index) => ({
+export const mockDataTableData: DataTableData[] = mockExperimentSessionData.events.map((event) => ({
     id: event.id,
     "Event Type": event.type,
     Timestamp: new Date(event.timestamp).toLocaleString(),

@@ -37,8 +37,19 @@ export default function CumulativeRecorderPage() {
   }, [backend]);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    let cancelled = false;
+    fetch(`${backend}/status`)
+      .then((r) => (r.ok ? (r.json() as Promise<Status>) : null))
+      .then((s) => {
+        if (!cancelled && s) setStatus(s);
+      })
+      .catch(() => {
+        /* ignore */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [backend]);
 
   const post = useCallback(
     async (path: string, body?: unknown) => {

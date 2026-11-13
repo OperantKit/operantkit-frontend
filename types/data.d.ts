@@ -2,7 +2,7 @@ declare module 'ExperimentData' {
   export interface BehaviorEvent {
     timestamp: number; // Unix timestamp or milliseconds since epoch
     type: 'response' | 'reinforcer' | 'stimulus_onset' | 'stimulus_offset';
-    value?: any; // Additional data if needed
+    value?: unknown; // Additional data if needed
   }
 
   export interface Trial {

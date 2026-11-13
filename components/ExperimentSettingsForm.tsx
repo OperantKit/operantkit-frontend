@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import {
   ExperimentSettings,
   ScheduleType,
@@ -9,8 +9,6 @@ import {
   VariableRatioConfig,
   FixedIntervalConfig,
   VariableIntervalConfig,
-  ExtinctionConfig,
-  TrialCondition,
   defaultExperimentSettings,
   defaultFixedRatioConfig,
   defaultVariableRatioConfig,
@@ -18,22 +16,27 @@ import {
   defaultVariableIntervalConfig,
   defaultExtinctionConfig,
 } from "../types/experiment";
-import { useExperimentSettings, saveExperimentSettings } from "../lib/api/client";
+import { useExperimentSettings, saveExperimentSettings, FetchError } from "../lib/api/client";
 import { useSWRConfig } from "swr"; // Import useSWRConfig for mutate
 
 const ExperimentSettingsForm: React.FC = () => {
   const { data, error, isLoading } = useExperimentSettings();
   const { mutate } = useSWRConfig(); // Get the global mutate function
   const [settings, setSettings] = useState<ExperimentSettings>(
-    defaultExperimentSettings
+    data ?? defaultExperimentSettings
   );
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  useEffect(() => {
+  // Replace the form contents when new settings arrive from the server.
+  // Done during render rather than in an effect, so the form never shows
+  // the defaults for one extra render after the data has arrived.
+  const [loadedData, setLoadedData] = useState(data);
+  if (data !== loadedData) {
+    setLoadedData(data);
     if (data) {
       setSettings(data);
     }
-  }, [data]);
+  }
 
   const validateField = useCallback(
     (
@@ -201,7 +204,7 @@ const ExperimentSettingsForm: React.FC = () => {
         },
       ],
     }));
-  }, [defaultFixedRatioConfig]);
+  }, []);
 
   const removeTrialCondition = useCallback((index: number) => {
     setSettings((prev) => ({
@@ -276,9 +279,14 @@ const ExperimentSettingsForm: React.FC = () => {
       await saveExperimentSettings(settings);
       mutate('/api/settings'); // Revalidate SWR cache for this key
       alert("Experiment settings saved successfully!");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to save settings:", err);
-      alert(`Failed to save experiment settings: ${err.info?.message || err.message}`);
+      const serverMessage =
+        err instanceof FetchError ? (err.info as { message?: unknown } | null)?.message : undefined;
+      const message =
+        (typeof serverMessage === "string" && serverMessage) ||
+        (err instanceof Error ? err.message : String(err));
+      alert(`Failed to save experiment settings: ${message}`);
     }
   };
 
