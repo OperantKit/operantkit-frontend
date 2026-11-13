@@ -1,4 +1,19 @@
-import { test, expect, type Dialog } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+// alert() blocks the page, so click() returns only after the dialog is handled.
+// Attach the handler before the click and wait until it has finished, so the
+// test does not end while the dialog is still being answered.
+async function clickAndAnswerDialog(page: Page, click: () => Promise<void>, accept: boolean): Promise<string> {
+  let answered!: (message: string) => void;
+  const done = new Promise<string>((resolve) => { answered = resolve; });
+  page.once('dialog', async (dialog) => {
+    const message = dialog.message();
+    if (accept) await dialog.accept(); else await dialog.dismiss();
+    answered(message);
+  });
+  await click();
+  return done;
+}
 
 test.describe('OperantKit Frontend UI Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -58,13 +73,9 @@ test.describe('OperantKit Frontend UI Tests', () => {
     await form.locator('input[name="ratio"]').fill('0');
     await form.locator('input[name="duration"]').fill('0');
 
-    const validationDialogHandler = async (dialog: Dialog) => {
-      expect(dialog.message()).toContain('Please correct the errors in the form before saving.');
-      await dialog.dismiss();
-    };
-    page.on('dialog', validationDialogHandler);
-
-    await form.locator('button:has-text("Save Profile")').click();
+    const validationMessage = await clickAndAnswerDialog(
+      page, () => form.locator('button:has-text("Save Profile")').click(), false);
+    expect(validationMessage).toContain('Please correct the errors in the form before saving.');
 
     await expect(form.locator('p:has-text("Total trials must be a positive number.")')).toBeVisible();
     await expect(form.locator('p:has-text("Ratio must be a positive number.")')).toBeVisible();
@@ -74,17 +85,11 @@ test.describe('OperantKit Frontend UI Tests', () => {
     await form.locator('input[name="ratio"]').fill('10');
     await form.locator('input[name="duration"]').fill('90');
 
-    page.off('dialog', validationDialogHandler);
-    const successDialogHandler = async (dialog: Dialog) => {
-      expect(dialog.message()).toContain('Experiment settings saved successfully!');
-      await dialog.accept();
-    };
-    page.on('dialog', successDialogHandler);
-
-    await form.locator('button:has-text("Save Profile")').click();
+    const successMessage = await clickAndAnswerDialog(
+      page, () => form.locator('button:has-text("Save Profile")').click(), true);
+    expect(successMessage).toContain('Experiment settings saved successfully!');
 
     await expect(form.locator('p.text-red-600')).not.toBeVisible();
-    page.off('dialog', successDialogHandler);
   });
 
   test('should allow editing form input state on /settings page', async ({ page }) => {
@@ -105,12 +110,8 @@ test.describe('OperantKit Frontend UI Tests', () => {
     await page.goto('/settings');
     const form = page.locator('form');
 
-    const saveProfileDialogHandler = async (dialog: Dialog) => {
-      expect(dialog.message()).toContain('Experiment settings saved successfully!');
-      await dialog.accept();
-    };
-    page.on('dialog', saveProfileDialogHandler);
-    await form.locator('button:has-text("Save Profile")').click();
-    page.off('dialog', saveProfileDialogHandler);
+    const message = await clickAndAnswerDialog(
+      page, () => form.locator('button:has-text("Save Profile")').click(), true);
+    expect(message).toContain('Experiment settings saved successfully!');
   });
 });

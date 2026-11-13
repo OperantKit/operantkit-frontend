@@ -32,29 +32,22 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  /* Configure projects for major browsers */
+  /* The specs check page content, not browser-specific behavior, so they run
+     in Chromium only (the README installs only Chromium). */
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
   ],
 
-  /* Run your local dev server before starting the tests */
+  /* Serve a production build. The dev server compiles each route on its
+     first request, and on a busy machine that compile can stall long enough
+     to fail the specs. */
   webServer: {
-    command: 'npm run dev', // Command to start your Next.js dev server
+    command: 'npm run build && npm run start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000, // 120 seconds
+    timeout: 300 * 1000,
   },
 });
