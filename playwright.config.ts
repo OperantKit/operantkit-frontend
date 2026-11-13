@@ -13,6 +13,9 @@ dotenv.config({ path: path.resolve(__dirname, '.', '.env') });
  */
 export default defineConfig({
   testDir: './tests', // Look for tests in the 'tests' directory
+  /* screenshots.spec.ts rewrites the README images, so `npm test` skips it.
+     Run it with `npm run screenshots` (playwright.screenshots.config.ts). */
+  testIgnore: 'screenshots.spec.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

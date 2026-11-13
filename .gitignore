@@ -24,6 +24,10 @@ out/
 build/
 dist/
 *.tsbuildinfo
+# Written by `next dev` / `next build` (Next.js recommends not tracking it)
+next-env.d.ts
+# Copied from node_modules/contingency by `npm run wasm:copy` (run by dev and build)
+/public/contingency_bg.wasm
 
 # Test / coverage
 coverage/

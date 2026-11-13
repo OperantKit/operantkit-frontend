@@ -11,6 +11,7 @@
     "lint": "eslint",
     "test": "playwright test",
     "test:smoke": "playwright test tests/smoke.spec.ts",
+    "screenshots": "playwright test --config playwright.screenshots.config.ts",
     "wasm:build": "cd ../../core/contingency-rs && wasm-pack build --target web --release --out-dir pkg"
   },
   "dependencies": {

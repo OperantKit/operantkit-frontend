@@ -69,6 +69,12 @@ npx playwright install chromium   # once
 npm test                          # Playwright end-to-end tests
 ```
 
+`npm test` は追跡しているファイルを書き換えません。README の画像（`docs/assets/screenshots/` の 5 枚、1280×720 を 2 倍の 2560×1440 で撮影）を作り直すときは、別に次を実行します。本番ビルドを立てて撮り、`/sim` は「WASM ready」が出るまで待ちます。
+
+```bash
+npm run screenshots
+```
+
 ## ライセンス
 
 MIT です。[LICENSE](LICENSE) を参照してください。

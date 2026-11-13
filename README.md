@@ -69,6 +69,12 @@ npx playwright install chromium   # once
 npm test                          # Playwright end-to-end tests
 ```
 
+`npm test` does not modify tracked files. To regenerate the README images (the five files in `docs/assets/screenshots/`, 1280×720 at scale 2, so 2560×1440), run this separately. It serves a production build and, on `/sim`, waits for "WASM ready" before capturing.
+
+```bash
+npm run screenshots
+```
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
